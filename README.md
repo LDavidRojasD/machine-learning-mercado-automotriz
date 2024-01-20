@@ -1,3 +1,5 @@
+<a href="https://www.python.org/">![Python](https://img.shields.io/badge/Python-3.10.12-3776AB?style=for-the-bage&logo=Python)</a> <a href="https://numpy.org/">![NumPy](https://img.shields.io/badge/NumPy-1.25.2-013243?style=for-the-bage&logo=numpy)</a> <a href="https://jupyter.org/">![Jupyter Notebook](https://img.shields.io/badge/Jupyter_Notebook-1.0.0-F37626?style=for-the-bage&logo=jupyter)</a> <a href="https://pandas.pydata.org/">![Pandas](https://img.shields.io/badge/Pandas-2.1.0-150458?style=for-the-bage&logo=pandas)</a> <a href="https://matplotlib.org">![matplotlib](https://img.shields.io/badge/matplotlib-3.5.1-4285F4?style=for-the-bage&logo=exordo)</a> <a href="https://seaborn.pydata.org/">![seaborn](https://img.shields.io/badge/seaborn-0.13.0-4285F4?style=for-the-bage&logo=flood)</a> <a href="https://scikit-learn.org/stable/">![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3.2-3776AB?style=for-the-bage&logo=scikit-learn)</a>
+
 ![Texto alternativo](assets/images/bannerAutomotriz.png)
 
 # Proyecto Integrador: Machine Learning en investigación de mercado automotor
@@ -15,7 +17,7 @@ Además del análisis detallado de la exploración de los datos, estas son las d
 2. Implementar un modelo de regresión con aprendizaje supervisado que permita predecir el precio final de los vehículos.
 
 ### CRISP-DM
-La metodología Proceso Estándar de Toda la Industria para Minería de Datos (CRISP-DM en inglés) es utilizada en proyectos de análisis de datos y minería de datos. Se puede considerar como la metodología estándar en la industria para proyectos dedicados a extraer valor de los datos. Estaremos resumiendo sus fases dentro del proyecto en:
+La metodología Proceso Estándar de Toda la Industria para Minería de Datos ([CRISP-DM](https://www.ibm.com/docs/es/spss-modeler/saas?topic=dm-crisp-help-overview) en inglés) es utilizada en proyectos de análisis de datos y minería de datos. Se puede considerar como la metodología estándar en la industria para proyectos dedicados a extraer valor de los datos. Estaremos resumiendo sus fases dentro del proyecto en:
 
 - Fase 1: Análisis exploratorio de datos
   - Comprensión del negocio
@@ -24,12 +26,15 @@ La metodología Proceso Estándar de Toda la Industria para Minería de Datos (C
 - Fase 2: Preparación de datos
   - Preparación de los datos
           
-- Fase 3: Modelamiento y evaluación
+- Fase 3: Modelación y evaluación
   - Modelado
   - Evaluación
 
 La última fase de CRISP-DM, la de despliegue, queda fuera del alcance y objetivos del proyecto debido a que implementa el modelo en un entorno de producción y se realiza un seguimiento continuo para asegurar su correcto funcionamiento.
 
+<p align="center">
+  <img src="assets/images/CRISP-DM.png" alt="JuveYell" width="400px">
+</p>
 
 ## 1 Exploremos los datos
 ### Comprensión del negocio
@@ -77,6 +82,64 @@ Para ello, nuestro departamento de datos ha recopilado precios y característica
    highwaympg              Int       Consumo en ruta, en millas por galón de combustible
    price                   Float     Precio del vehículo
 </pre>
+  <pre>archivo: ML_cars / formato: CSV / filas: 205 / columnas: 26 / consumo memoria: 41.8+ KB</pre>
 </details>
 
+## 2 La preparación de los datos
+Los datos están completos, sin errores visibles o fuera de rango (outliers)
 
+### El balance
+Los datos balanceados son importantes para el aprendizaje automático porque un modelo entrenado en datos desbalanceados puede sesgarse hacia la clase más representada (en nuestro caso los vehiculos de precio bajo). En el contexto del aprendizaje automático, los datos están balanceados cuando el número de observaciones de cada clase es aproximadamente el mismo. Si una clase tiene muchas más observaciones que otra, los datos se consideran desbalanceados.
+> "El balance del dataset cuando hay un target binario es la relación entre las dos categorías. En este caso, la variable objetivo de la regresión es price_category, que es una variable binaria que toma valor 0 cuando el precio está por debajo de la mediana, y 1 cuando el precio está por encima de la mediana. 
+Como por definición la mediana es el punto que separa a los datos en 50% por encima y 50% por debajo, tenemos exactamente (+-1) la misma cantidad de categoría 0 (barato) que de categoría 1 (caro). Es decir, balance perfecto.<br>En el caso de la variable precio que es una variable continua (usada para regresión, no clasificación), lo que si podemos decir es que tiene una distribución asimétrica. Sin embargo eso no afecta el balance del dataset dada la definición de la variable objetivo en clasificación" <a href="https://github.com/AlterCaimi">![Alter Caimi](https://img.shields.io/badge/Alter_Caimi-3776AB?style=for-the-bage&logo=Github)</a>
+
+La columna 'price' es una variable que toma como argumento cantidades numéricas pudiendo adquirir cualquier valor dentro de un intervalo especificado de valores. Solamente está limitado por el cono monetario del país, lo que en teoría permite que exista indefinidos valores entre dos variables.
+
+Según la influencia que le estamos asignando a 'price', su valor dependerá de los valores que tomen las otras variables. Por lo tanto es una variable dependiente.
+
+Calculando la mediana de todos los precios encontramos un punto medio que nos permite balancear el conjunto de datos. Los valores menores a ese punto medio serán clasificados como baratos y tendrán un valor de cero (0) en la nueva columna ‘price_category’ y los valores por encima de la mediana serán clasificados como caros y tendrán un valor de uno (1) en la nueva columna ‘price_category’.
+
+Calculando la mediana de todos los precios encontramos un punto medio que nos permite balancear el conjunto de datos. Los valores menores a ese punto medio serán clasificados como baratos y tendrán un valor de cero (0) en la nueva columna ‘price_category’ y los valores por encima de la mediana serán clasificados como caros y tendrán un valor de uno (1) en la nueva columna ‘price_category’.
+
+|   price    |  price_category  |
+|------------|------------------|
+|  13495.0   |        1         |
+|  10359.0   |        0         |
+|  17030.0   |        1         |
+
+La nueva columna ‘price_category’ contendrá los ceros y unos que clasifican como baratos o caros a los vehículos. Eliminamos la columna ‘price’ y en su lugar usamos ‘price_category’ para entrenas al modelo.<br>
+|  price_category  |
+|------------------|
+|        1         |
+|        0         |
+|        1         |
+
+### De categóricas a numéricas
+
+Los modelos de clasificación no pueden entender directamente los valores categóricos. Por lo tanto, es necesario convertir las variables categóricas a un formato numérico que los modelos de clasificación puedan entender.
+
+| doornumber |  | doornumber |
+|--------------------|--|------------------|
+|  TWO        |->|   2     |
+|  FOUR    |->|4|
+
+| cylindernumber |  | cylindernumber |
+|----------------|--|----------------|
+|  FOUR          |->|   4     |
+|  SIX    |->| 6 |
+|  FIVE   |->| 5 |
+|  THREE   |->| 3 |
+|  TWELVE   |->| 12 |
+|  TWO   |->| 2 |
+|  EIGHT   |->| 8 |
+
+### Nuevas columnas
+Obtenemos las marcas de los vehículo de la columna ‘CarName’ y las guardamos en la columna ‘brand_name’. Luego eliminamos la columna ‘CarName’
+
+| CarName |  | brand_name |
+|---------|--|------------|
+| AUDI 100 LS |->| AUDI |
+
+
+
+## 3 Modelación y evaluación
