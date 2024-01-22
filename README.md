@@ -341,3 +341,25 @@ Oservación: Es el mejor modelo entre los evaluados, seleccionando automáticame
 ### Recomendaciones:
 - Si se desea usar KNN para predecir el precio y clasificar los vehículos en costosos y económicos, usar SelectBest para encontrar las mejores características y en el parámetro scoring='recall' al usar GridSearchCV para encontrar los mejores hiperparámetros del modelo de clasificación.
 - Realizar pruebas con modelos diferentes a KNN.
+
+### Modelo SVM (Clasificación)
+En este apartado detallamos las pruebas realizadas con algoritmos de tipo Support Vector Machine (SVM) en clasificación. Recordamos que nuestra variable objetivo (target) es 'price_category', la cual es una variable de tipo binario que toma valor 0 en caso de que el precio del vehículo sea inferior a la mediana de los precios, y 1 en caso de que el precio del vehículo sea superior a la mediana.
+
+#### Aspectos genereales de las pruebas SVM:
+- Se utilizan los datos de "DatasetForML.csv" que resulta del tratamiento del documento original 'ML_cars.csv' realizado en las operaciones ejecutadas en el notebock "ETLPropuesta2.ipynb"el cual ya tiene todas las transformaciones necesarias (codificación de variables categóricas, eliminación de columnas, cambio de textos a números, etc).
+- Se entrenan todos los modelos con el 80% de los datos y se realizan pruebas con el 20% restante.
+- En este apartado se analiza solamente la clasificiación con SVM, dejando la regresión para un análisis posterior junto con otros modelos.
+
+
+#### Aspectos genereales de las pruebas SVM:
+- Utilizamos la librería Sklearn, en particular el estimador SVC.
+- Escalamos los datos utilizando StandarScaler.
+- Realizamos optimización de hiperparámetros utilizando GridSearchCV, ya que realiza una búsqueda exhaustiva.
+- El espacio de hiperparámetros de búsqueda incluye valores de C (hiperparámetro de regularización) 'C': 1, 10, 50, 100, 1000, y exploramos los kernels: 'linear', 'poly', 'rbf' y 'sigmoid'.
+- Para el kernel 'poly' se prueban varios grados de polinomio.
+- Para los kernel 'rbf' y 'sigmoid' se prueban varios valores de gamma.
+- Los mejors hiperparámetros obtenidos son: {'C': 50, 'kernel': 'linear', 'probability': True, 'random_state': 639}
+- Precisión del mejor modelo SVC: 0.9268
+- AUC del mejor modelo SVC: 0.9881
+- Exploramos luego reducción de dimensionalidad. Probamos de 1 a 9 componentes PCA. El mejor modelo utilizó 8 componentes PCA y obtuvo: Precisión 0.9268, AUC  0.9833.
+- 
