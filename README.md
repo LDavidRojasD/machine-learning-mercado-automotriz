@@ -37,6 +37,9 @@ La metodología Proceso Estándar de Toda la Industria para Minería de Datos ([
     - [Resultados obtenidos en las pruebas para el modelo de clasificación](#resultados-obtenidos-en-las-pruebas-para-el-modelo-de-clasificación)
     - [Resultados obtenidos en las pruebas para el modelo de regresión](#resultados-obtenidos-en-las-pruebas-para-el-modelo-de-regresión)
     - [Recomendaciones](#recomendaciones)
+  - [Modelo SVM (Clasificación)](#modelo-svm)
+    - [Aspectos genereales de las pruebas SVM](#aspectos-genereales-de-las-pruebas-svm)
+    - [Aspectos específicos de las pruebas SVM](#aspectos-específicos-de-las-pruebas-svm)
   - [Evaluación]()
 
 La última fase de CRISP-DM, la de despliegue, queda fuera del alcance y objetivos del proyecto debido a que implementa el modelo en un entorno de producción y se realiza un seguimiento continuo para asegurar su correcto funcionamiento.
@@ -342,8 +345,8 @@ Oservación: Es el mejor modelo entre los evaluados, seleccionando automáticame
 - Si se desea usar KNN para predecir el precio y clasificar los vehículos en costosos y económicos, usar SelectBest para encontrar las mejores características y en el parámetro scoring='recall' al usar GridSearchCV para encontrar los mejores hiperparámetros del modelo de clasificación.
 - Realizar pruebas con modelos diferentes a KNN.
 
-### Modelo SVM (Clasificación)
-En este apartado detallamos las pruebas realizadas con algoritmos de tipo Support Vector Machine (SVM) en clasificación. Recordamos que nuestra variable objetivo (target) es 'price_category', la cual es una variable de tipo binario que toma valor 0 en caso de que el precio del vehículo sea inferior a la mediana de los precios, y 1 en caso de que el precio del vehículo sea superior a la mediana.
+### Modelo SVM
+En este apartado detallamos las pruebas realizadas con algoritmos de tipo Support Vector Machine (SVM) en **clasificación**. Recordamos que nuestra variable objetivo (target) es 'price_category', la cual es una variable de tipo binario que toma valor cero (0) en caso de que el precio del vehículo sea inferior a la mediana de los precios, y uno (1) en caso de que el precio del vehículo sea superior a la mediana.
 
 #### Aspectos genereales de las pruebas SVM:
 - Se utilizan los datos de "DatasetForML.csv" que resulta del tratamiento del documento original 'ML_cars.csv' realizado en las operaciones ejecutadas en el notebock "ETLPropuesta2.ipynb"el cual ya tiene todas las transformaciones necesarias (codificación de variables categóricas, eliminación de columnas, cambio de textos a números, etc).
@@ -351,7 +354,7 @@ En este apartado detallamos las pruebas realizadas con algoritmos de tipo Suppor
 - En este apartado se analiza solamente la clasificiación con SVM, dejando la regresión para un análisis posterior junto con otros modelos.
 
 
-#### Aspectos genereales de las pruebas SVM:
+#### Aspectos específicos de las pruebas SVM
 - Utilizamos la librería Sklearn, en particular el estimador SVC.
 - Escalamos los datos utilizando StandarScaler.
 - Realizamos optimización de hiperparámetros utilizando GridSearchCV, ya que realiza una búsqueda exhaustiva.
@@ -368,15 +371,18 @@ En este apartado detallamos las pruebas realizadas con algoritmos de tipo Suppor
   <img src="assets/images/SVM predictions.png" alt="SVM Predictions" width="400px">
 </div>
 - En resumen, el mejor modelo SVM para clasificación fue:
-| Característica      | Detalle   |
-|----------------------|-----------|
-| Modelo               | SVC       |
-| C                    | 50        |
-| Kernel               | linear    |
-| Precisión            | 0.9268    |
-| AUC                  | 0.9881    |
-| Sensibilidad        | 0.9523    |
-| Especificidad       | 0.9000    |
-| Validación LOOCV     | 0.88      |
-
+<details open><summary>Detalles:</summary>
+<pre>
+Característica      Detalle
+------------------------------
+Modelo              SVC
+C                   50
+Kernel              linear
+Precisión           0.9268
+AUC                 0.9881
+Sensibilidad        0.9523
+Especificidad       0.9000
+Validación LOOCV    0.88
+</pre>
+</details>
 
