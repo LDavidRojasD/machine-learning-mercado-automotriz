@@ -214,7 +214,7 @@ La división del conjunto de datos en dos partes se puede realizar de varias man
   <img src="assets/images/train-test-split.jpg" alt="train-test-split.jpg" width="600px">
 </p>
 
-## 3 Modelación y evaluación
+## 3 Modelado y evaluación
 
 ### Modelo KNN
 Se tiene un dataset de vehículos en el mercado con precios que pueden depender de las características como tamaño del motor, cilindraje, consumo de combustible, etc. Se debe construir un modelo capaz de pronosticar el precio del vehículo (modelo de regresión) y otro modelo capaz de clasificar los vehículos en baratos y caros (modelo de clasificación) con estas características. Se realizan diferentes pruebas para los dos modelos usando KNN (K-Nearest-Neighbor):
