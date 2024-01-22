@@ -19,16 +19,20 @@ Además del análisis detallado de la exploración de los datos, estas son las d
 ### CRISP-DM
 La metodología Proceso Estándar de Toda la Industria para Minería de Datos ([CRISP-DM](https://www.ibm.com/docs/es/spss-modeler/saas?topic=dm-crisp-help-overview) en inglés) es utilizada en proyectos de análisis de datos y minería de datos. Se puede considerar como la metodología estándar en la industria para proyectos dedicados a extraer valor de los datos. Estaremos resumiendo sus fases dentro del proyecto en:
 
-- Fase 1: Análisis exploratorio de datos
-  - Comprensión del negocio
-  - Comprensión de los datos
+- [Fase 1: Análisis exploratorio de datos](#1-Exploremos-los-datos).
+  - [Comprensión del negocio](#comprensión-del-negocio)
+  - [Comprensión de los datos](#comprensión-de-los-datos)
 
-- Fase 2: Preparación de datos
-  - Preparación de los datos
-          
-- Fase 3: Modelación y evaluación
-  - Modelado
-  - Evaluación
+- [Fase 2: Preparación de datos](#2-La-preparación-de-los-datos)
+  - [El balance](#el-balance)
+  - [De categóricas a numéricas](#de-categóricas-a-numéricas)
+  - [La correlación entre las variables](#la-correlación-entre-las-variables)
+  - [Nuevas columnas](#nuevas-columnas)
+    - [One Hot Encoding](#one-hot-encoding)
+  - [Entre datos de entrenamiento y dastos de prueba](#entre-datos-de-entrenamiento-y-dastos-de-prueba)
+- [Fase 3: Modelación y evaluación]()
+  - [Modelo KNN](#modelo-knn)
+  - [Evaluación]()
 
 La última fase de CRISP-DM, la de despliegue, queda fuera del alcance y objetivos del proyecto debido a que implementa el modelo en un entorno de producción y se realiza un seguimiento continuo para asegurar su correcto funcionamiento.
 
@@ -82,7 +86,7 @@ Para ello, nuestro departamento de datos ha recopilado precios y característica
    highwaympg              Int       Consumo en ruta, en millas por galón de combustible
    price                   Float     Precio del vehículo
 </pre>
-  <pre>archivo: ML_cars / formato: CSV / filas: 205 / columnas: 26 / consumo memoria: 41.8+ KB</pre>
+  <pre>archivo: <a href='datasource/ML_cars.csv'>ML_cars</a> / formato: CSV / filas: 205 / columnas: 26 / consumo memoria: 41.8+ KB</pre>
 </details>
 
 ## 2 La preparación de los datos
@@ -149,7 +153,7 @@ Obtenemos las marcas de los vehículo de la columna 'CarName' y las guardamos en
 |---------|--|------------|
 | AUDI 100 LS |->| AUDI |
 
-#### One-hot Encoding
+#### One Hot Encoding
 Los modelos de aprendizaje automático, como los modelos de regresión y clasificación, suelen utilizar variables numéricas para realizar sus cálculos. Por lo tanto, es necesario convertir las variables categóricas en variables numéricas antes de poder utilizarlas en estos modelos.
 La conversión de variables categóricas en variables numéricas se puede realizar de varias maneras, pero la más común es utilizando el método de codificación binaria, también conocido como One-hot Encoding. Esta conversión también es conocida como el proceso de generación de las variables _dummies_.
 Por ejemplo, si tenemos una variable 'Gender' que toma los valores 'Female' y 'Male', el método One-hot Encoding indica crear columnas para cada valor que tome esta variable categórica y representar la ausencia de la característica con un cero (0) o uno (1) cuando la característica sí esté presente.
@@ -190,7 +194,7 @@ Por ejemplo, si tenemos una variable 'Gender' que toma los valores 'Female' y 'M
 |---------|-|------------|
 | DIESEL |  | 0 |
 
-### Entre datos de entrenamiento y dastos de prueba
+## Entre datos de entrenamiento y dastos de prueba
 
 ***Train Test Split*** es una técnica de aprendizaje automático que se utiliza para dividir un conjunto de datos en dos partes: un conjunto de entrenamiento y un conjunto de prueba. El conjunto de entrenamiento se utiliza para entrenar el modelo de aprendizaje automático, mientras que el conjunto de prueba se utiliza para evaluar el rendimiento del modelo.
 
@@ -203,3 +207,132 @@ La división del conjunto de datos en dos partes se puede realizar de varias man
 </p>
 
 ## 3 Modelación y evaluación
+
+### Modelo KNN
+Se tiene un dataset de vehículos en el mercado con precios que pueden depender de las características como tamaño del motor, cilindraje, consumo de combustible, etc. Se debe construir un modelo capaz de pronosticar el precio del vehículo (modelo de regresión) y otro modelo capaz de clasificar los vehículos en baratos y caros (modelo de clasificación) con estas características. Se realizan diferentes pruebas para los dos modelos usando KNN (K-Nearest-Neighbor):
+
+#### Aspectos genereales de las pruebas KNN: 
+- Se utilizan los datos de "DatasetForML.csv" que resulta del tratamiento del documento original 'ML_cars.csv' realizado en las operaciones ejecutadas en el notebock "ETLPropuesta2.ipynb"el cual ya tiene todas las transformaciones necesarias (codificación de variables categóricas, eliminación de columnas, cambio de textos a números, etc).
+- Se entrenan todos los modelos con el 70% de los datos y se realizan pruebas con el 30% restante.
+- Se genera modelo KNN de clasificación y regresión (cada prueba contiene sus própios aspectos específicos).
+- Para todas las pruebas se usa "GridSearchCV" para encontrar los mejores hiperparámetros variando "K" de 3 hasta el número que representa la mitad de los registros (esto porque de antemano se sabe que al usar la mediana del precio el dataset original queda dividido en dos partes iguales entre vehículos caros y económicos).
+- Para las pruebas de clasificación KNN se realizó matrix de confusión y accuracy como indicador de presición y exactitud del modelo.
+- Para las pruebas de de regresión  KNN se mide el error cuadrático medio y el coeficiente de correlación R^2 para determinar la presición y exactitud del modelo.
+- Al realizar pruebas, se concluye que para los modelos de clasificación se debe usar el parámetro scoring='recall' en la búsquedas de las grillas para los mejores hiperparámetros para evitar que el modelo tenga alta exhaustividad (apreciada cuando se dejaba scoring='accuracy').
+- Al finalizar se realiza validación cruzada para determinar la exactitud y reproducibilidad de los modelos KNN de caracterización y regresión; se usa accuracy para medir la exactitud en las clasificaciones y error cuadrático medio en las regresiones.
+  
+#### Aspectos específicos para las pruebas KNN:
+   
+- Se realiza una primer prueba registrada en el nortebook "KNN_All_Dim.ipynb" donde se usaron todas las variables (dimensiones) del dataset. Luego de varias pruebas se concluye que se obtienen mejores resultados sin escalar las variables numéricas.
+- La segunda prueba se registra en el notebook "KNN_Cor_Dim.ipynb" donde se busca inicialmente las 10 características que tienen el coeficiente de correlación más alto. Se toma la primer característica encontrada y se verifica su correlación con las demás dimensiones eliminando aquellas que se encontraron en la primer búsqueda (si están en el top 5 de la segunda búsqueda).
+- La tercer prueba se utiliza SelectBest con K=5 para encontrar las 5 mejores características y utilizarlas en el modelo.
+
+#### Resultados obtenidos en las pruebas para el modelo de clasificación:
+
+<details open><summary>KNN_All_Dim:</summary>
+<pre>
+characteristic    detail
+------------------------------------
+Modelo            K_Nearest_Neighbor
+n_neighbors       3
+weights           distance
+accuracy          0.90
+sensibilidad      0.83
+especificidad     0.95
+validación LOOCV  0.89
+</pre>
+Oservación: El modelo presenta buena reproducibilidad ya que la validación es cercana al accuracy inicial y su resultado es aceptable. Pero debido a que se utilizan todos las dimensiones se puede incurrir en un sobreajuste y genera más trabajo computacional.
+</details>
+
+<details><summary>KNN_Cor_Dim:</summary>
+<pre>
+characteristic   detail |
+-------------------------------------
+Modelo           K_Nearest_Neighbor
+n_neighbors      9
+weights          uniform
+accuracy         0.85
+sensibilidad     0.74
+especificidad    0.92
+validación LOOCV 0.87
+</pre>
+Oservación: Del mismo modo presenta buena reproducibilidad aunque con menor presición al anterior, pero con la ventaja de usar solo 6 dimensiones disminuyendo la probabilidad de sobreajuste mejorando los tiempso de respuesta del modelo.
+</details>
+
+<details><summary>KNN_SelectBest_Dim:</summary>
+<pre>
+characteristic    detail
+-------------------------------------
+Modelo            K_Nearest_Neighbor
+n_neighbors       35
+weights           uniform
+accuracy          0.94
+sensibilidad      0.96
+especificidad     0.92
+validación LOOCV  0.92
+</pre>
+Oservación: Es el mejor modelo entre los evaluados, seleccionando automáticamente las 5 mejores características y mejorando notablemente la exactitud y reproducibilidad.
+</details>
+
+#### Resultados obtenidos en las pruebas para el modelo de regresión:
+
+<details><summary>KNN_All_Dim:</summary>
+<pre>
+characteristic                    detail
+--------------------------------------------------------
+Modelo                            K_Nearest_Neighbor
+n_neighbors                       3
+weights                           distance
+algorithm                         ball_tree
+scoring_type                      neg_mean_squared_error
+scoring_value                     -9523245.77
+MSE                               6291026.24
+RMSE                              2508.19
+MAE                               1553.91
+R^2 (texts vs Predictions)        0.81
+MSE (validación cruzada - texts)  4162851.92
+</pre>
+Oservación: Aunque el coeficiente R^2 manidfiesta que hay una fuerte correlación entre los datos pronosticados y reales en los datos de testeo, el uso de todas las dimensiones puede generar sobreajuste y podría representar un mayor trabajo computacional. Sin embargo, se aprecia buena reproducibilidad del modelo al comparar el MSE inicial con los datos de validación.
+</details>
+
+<details><summary>KNN_Cor_Dim:</summary>
+<pre>
+characteristic                    detail
+---------------------------------------------------------
+Modelo                            K_Nearest_Neighbor
+n_neighbors                       5
+weights                           distance
+algorithm                         ball_tree
+scoring_type                      neg_mean_squared_error
+scoring_value                     -7762139.09
+MSE                               6511452.22
+RMSE                              2551.75
+MAE                               1563.53
+R^2 (texts vs Predictions)        0.80
+MSE (validación cruzada - texts)  11743067.17
+</pre>
+Oservación: Se mantiene la correlación entre los datos de prueba y pronóstico con respecto del modelo anterior, pero no se aprecia buena reproducibilidad en datos nuevos, según la validación cruzada.
+</details>
+
+<details><summary>KNN_SelectBest_Dim:</summary>
+<pre>
+characteristic                    detail
+--------------------------------------------------------
+Modelo                            K_Nearest_Neighbor
+n_neighbors                       3
+weights                           distance
+algorithm                         bruto
+scoring_type                      neg_mean_squared_error
+scoring_value                     -7637500.02
+MSE                               3300775.72
+RMSE                              1816.80
+MAE                               1214.09
+R^2 (texts vs Predictions)        0.90
+MSE (validación cruzada - texts)  4359926.82
+</pre>
+Oservación: Es el mejor modelo entre los evaluados, seleccionando automáticamente las 5 mejores características y mejorando notablemente la exactitud y reproducibilidad.
+</details>
+
+### Recomendaciones:
+- Si se desea usar KNN para predecir el precio y clasificar los vehículos en costosos y económicos, usar SelectBest para encontrar las mejores características y en el parámetro scoring='recall' al usar GridSearchCV para encontrar los mejores hiperparámetros del modelo de clasificación.
+- Realizar pruebas con modelos diferentes a KNN.
