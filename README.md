@@ -30,8 +30,13 @@ La metodología Proceso Estándar de Toda la Industria para Minería de Datos ([
   - [Nuevas columnas](#nuevas-columnas)
     - [One Hot Encoding](#one-hot-encoding)
   - [Entre datos de entrenamiento y dastos de prueba](#entre-datos-de-entrenamiento-y-dastos-de-prueba)
-- [Fase 3: Modelación y evaluación]()
+- [Fase 3: Modelación y evaluación](#3-Modelación-y-evaluación)
   - [Modelo KNN](#modelo-knn)
+    - [Aspectos genereales de las pruebas KNN](#aspectos-genereales-de-las-pruebas-knn)
+    - [Aspectos específicos para las pruebas KNN](#aspectos-específicos-para-las-pruebas-knn)
+    - [Resultados obtenidos en las pruebas para el modelo de clasificación](#resultados-obtenidos-en-las-pruebas-para-el-modelo-de-clasificación)
+    - [Resultados obtenidos en las pruebas para el modelo de regresión](#resultados-obtenidos-en-las-pruebas-para-el-modelo-de-regresión)
+    - [Recomendaciones](#recomendaciones)
   - [Evaluación]()
 
 La última fase de CRISP-DM, la de despliegue, queda fuera del alcance y objetivos del proyecto debido a que implementa el modelo en un entorno de producción y se realiza un seguimiento continuo para asegurar su correcto funcionamiento.
