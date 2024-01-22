@@ -361,5 +361,22 @@ En este apartado detallamos las pruebas realizadas con algoritmos de tipo Suppor
 - Los mejors hiperparámetros obtenidos son: {'C': 50, 'kernel': 'linear', 'probability': True, 'random_state': 639}
 - Precisión del mejor modelo SVC: 0.9268
 - AUC del mejor modelo SVC: 0.9881
-- Exploramos luego reducción de dimensionalidad. Probamos de 1 a 9 componentes PCA. El mejor modelo utilizó 8 componentes PCA y obtuvo: Precisión 0.9268, AUC  0.9833.
-- 
+- Exploramos luego reducción de dimensionalidad. Probamos de 1 a 9 componentes PCA. El mejor modelo utilizó 8 componentes PCA y obtuvo: Precisión 0.9268, AUC  0.9833. Por lo tanto, la reducción de dimensionalidad no mejora la precisión.
+- Se realizó validación cruzada LOOCV obteniendo un valor de accuracy promedio 0.88.
+<div align="center">
+  <img src="assets/images/SVM conf matrix.png" alt="SVM Confusion Matrix" width="400px">
+  <img src="assets/images/SVM predictions.png" alt="SVM Predictions" width="400px">
+</div>
+- En resumen, el mejor modelo SVM para clasificación fue:
+| Característica      | Detalle   |
+|----------------------|-----------|
+| Modelo               | SVC       |
+| C                    | 50        |
+| Kernel               | linear    |
+| Precisión            | 0.9268    |
+| AUC                  | 0.9881    |
+| Sensibilidad        | 0.9523    |
+| Especificidad       | 0.9000    |
+| Validación LOOCV     | 0.88      |
+
+
