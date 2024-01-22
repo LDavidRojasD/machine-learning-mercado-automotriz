@@ -386,3 +386,10 @@ Validación LOOCV    0.88
 </pre>
 </details>
 
+### Otros modelos de Regresión
+En este apartado detallamos el análisis comparativo de varios modelos de regresión, para complementar al anterior análisis hecho sobre KNN. Recordamos que en este caso la variable objetivo (target) es el precio (columna 'price'), una variable contínua.
+
+#### Aspectos genereales:
+- Se evaluaron diversas pipelines para poder comparar varios modelos de regresión.
+- Los modelos evaluados fueron LinearRegression, Lasso, Ridge, ElasticNet, SVR, KNeighborsRegressor, XGBRegressor
+
