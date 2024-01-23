@@ -409,7 +409,8 @@ MSE                               3140593.60
 RMSE                              1772.17
 MAE                               1263.02
 R^2 (tests vs Predictions)        0.93
-
+</pre>
+</details>
 <div align="center">
   <img src="assets/images/catboost 1.png" alt="Price vs Horsepower" width="400px">
   <img src="assets/images/catboost 2.png" alt="Catboost comparision" width="400px">
