@@ -394,8 +394,9 @@ En este apartado detallamos el análisis comparativo de varios modelos de regres
 - Los modelos evaluados fueron LinearRegression, Lasso, Ridge, ElasticNet, SVR, KNeighborsRegressor, XGBRegressor, DecissionTreeRegressor y Catboost Regressor.
 - En todos los casos, se evaluó el tipo de escalado: StandarScaler y MinMaxScaler. Resultó mejor el funcionamiento de StandarScaler.
 - También se evaluaron los modelos con reduccion de la dimensionalidad mediante PCA. La performance de los modelos no fue mejor utilizando de 1 a 9 componentes PCA.
-- Finalmente, se tomaron solamente las 3 variables con más correlación con la variable precio (correlación mayor a 0.8). La regresión mejoró, y se obtuvieron los siguientes resultados de performance:
-
+- Finalmente, se tomaron solamente las 3 variables con más correlación con la variable precio (correlación mayor a 0.8). La regresión mejoró, seleccionándose el estimador catboost, y se obtuvieron los siguientes resultados de performance:
+<details open><summary>Detalles:</summary>
+<pre>
 characteristic                    detail
 --------------------------------------------------------
 Modelo                            CatboostRegressor
@@ -407,8 +408,7 @@ min_data_in_leaf                  24
 MSE                               3140593.60
 RMSE                              1772.17
 MAE                               1263.02
-R^2 (texts vs Predictions)        0.93
-MSE (validación cruzada - texts)  4359926.82
+R^2 (tests vs Predictions)        0.93
 
 <div align="center">
   <img src="assets/images/catboost 1.png" alt="Price vs Horsepower" width="400px">
